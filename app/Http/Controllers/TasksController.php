@@ -70,6 +70,8 @@ class TasksController extends Controller
             'status' => $request->status,
             'content' => $request->content,
             ]);
+            
+         return back();  
         
         // $task = new Task;
         // // $task->status = $request->status;
@@ -175,8 +177,8 @@ class TasksController extends Controller
         
         $task->delete();
         }
-        return redirect('/');
         
+        return back();
         
     }
 }
