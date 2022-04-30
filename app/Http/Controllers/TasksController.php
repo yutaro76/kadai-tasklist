@@ -16,7 +16,7 @@ class TasksController extends Controller
     public function index()
     {
         $data = [];
-        if (\Auth::check()) {
+        if (\Auth::check()) {{
             
             $user = \Auth::user();
             
@@ -26,13 +26,12 @@ class TasksController extends Controller
                 'user' => $user,
                 'tasks' => $tasks,
                 ];
-                
-            return view('tasks.index', $data);
-            
-        } else {
-            return redirect('/');
         }
-        
+         return view('tasks.index', $data);
+         
+    } else {
+        return view('tasks.index');
+    }
         
     }
 
@@ -49,8 +48,8 @@ class TasksController extends Controller
         
         return view('tasks.create', ['task' => $task,]);
         } else {
-            return redirect('/');
-        }
+        return view('tasks.index');
+    }
         
     }
 
@@ -77,7 +76,13 @@ class TasksController extends Controller
         // // $task->content = $request->content;
         // $task->save();
         
+        if (\Auth::check()) {
+        
         return redirect('/');
+        
+        }else {
+        return view('tasks.index');
+    }
     }
 
     /**
@@ -88,7 +93,6 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        if (\Auth::check()) {
         
         $task = Task::findOrFail($id);
         
@@ -98,15 +102,17 @@ class TasksController extends Controller
         
         // $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(5);
         
+        if (\Auth::id() === $user) {
+        
         return view('tasks.show', [
             'user' => $user,
             'task' => $task,
             ]);
-        } else {
-            return redirect('/');
-        }
-        
             
+        } else {
+            return view('tasks.index');
+        }
+          
     }
 
     /**
@@ -117,16 +123,17 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::check()) {
         
         $task = Task::findOrFail($id);
         
+        if (\Auth::id() === $task->user_id) {
+        
         return view('tasks.edit', ['task' => $task,]);
-    
-            
-        }else {
-            return redirect('/');
+        
+        } else {
+            return view('tasks.index');
         }
+
     }
     /**
      * Update the specified resource in storage.
@@ -145,9 +152,18 @@ class TasksController extends Controller
         $task = Task::FindOrFail($id);
         $task->status = $request->status;
         $task->content = $request->content;
+        
+        if (\Auth::id() === $task->user_id) {{
+        
         $task->save();
+            
+        }
         
         return redirect('/');
+    } else {
+        return view('tasks.index');
+    }
+    
     }
 
     /**
@@ -160,10 +176,13 @@ class TasksController extends Controller
     {
         $task = Task::FindOrFail($id);
         
-        if (\Auth::id() === $task->user_id) {
+        if (\Auth::id() === $task->user_id) {{
         $task->delete();
         }
         
         return redirect('/');
+        }else{
+            return view('tasks.index');
+        }
     }
 }
