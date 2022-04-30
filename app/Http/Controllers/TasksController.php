@@ -152,12 +152,14 @@ class TasksController extends Controller
         $task = Task::FindOrFail($id);
         $task->status = $request->status;
         $task->content = $request->content;
-        $task->save();
-            
         
-        if (\Auth::id() === $task->user_id) {
+        if (\Auth::id() === $task->user_id) {{
+        $task->save();
+        }
         return redirect('/');
+        
     } else {
+        
         return view('tasks.index');
     }
     
@@ -173,13 +175,15 @@ class TasksController extends Controller
     {
         $task = Task::FindOrFail($id);
         
+        if (\Auth::id() === $task->user_id) {{
         
         $task->delete();
-        
-        if (\Auth::id() === $task->user_id) {
+        }
         return redirect('/');
-        }else{
+        
+        } else {
             return view('tasks.index');
         }
+        
     }
 }
