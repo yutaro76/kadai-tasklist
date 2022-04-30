@@ -16,7 +16,7 @@ class TasksController extends Controller
     public function index()
     {
         $data = [];
-        if (\Auth::check()) {{
+        if (\Auth::check()) {
             
             $user = \Auth::user();
             
@@ -29,9 +29,6 @@ class TasksController extends Controller
         }
          return view('tasks.index', $data);
          
-    } else {
-        return view('tasks.index');
-    }
         
     }
 
@@ -114,7 +111,7 @@ class TasksController extends Controller
             ]);
             
         } else {
-            return view('tasks.index');
+            return redirect('/');
         }
           
     }
@@ -135,7 +132,7 @@ class TasksController extends Controller
         return view('tasks.edit', ['task' => $task,]);
         
         } else {
-            return view('tasks.index');
+            return redirect('/');
         }
 
     }
