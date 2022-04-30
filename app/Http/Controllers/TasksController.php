@@ -71,7 +71,7 @@ class TasksController extends Controller
             'content' => $request->content,
             ]);
             
-         return back();  
+        return redirect('/');
         
         // $task = new Task;
         // // $task->status = $request->status;
@@ -178,7 +178,7 @@ class TasksController extends Controller
         $task->delete();
         }
         
-        return back();
+        return redirect('/');
         
     }
 }
