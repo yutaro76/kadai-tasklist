@@ -26,9 +26,14 @@ class TasksController extends Controller
                 'user' => $user,
                 'tasks' => $tasks,
                 ];
+                
+            return view('tasks.index', $data);
+            
+        } else {
+            return redirect('/');
         }
         
-        return view('tasks.index', $data);
+        
     }
 
     /**
@@ -38,9 +43,15 @@ class TasksController extends Controller
      */
     public function create()
     {
+        if (\Auth::check()) {
+        
         $task = new Task;
         
         return view('tasks.create', ['task' => $task,]);
+        } else {
+            return redirect('/');
+        }
+        
     }
 
     /**
@@ -77,6 +88,8 @@ class TasksController extends Controller
      */
     public function show($id)
     {
+        if (\Auth::check()) {
+        
         $task = Task::findOrFail($id);
         
         // $user->loadRelationshipCounts();
@@ -89,6 +102,11 @@ class TasksController extends Controller
             'user' => $user,
             'task' => $task,
             ]);
+        } else {
+            return redirect('/');
+        }
+        
+            
     }
 
     /**
@@ -99,11 +117,17 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
+        if (\Auth::check()) {
+        
         $task = Task::findOrFail($id);
         
         return view('tasks.edit', ['task' => $task,]);
+    
+            
+        }else {
+            return redirect('/');
+        }
     }
-
     /**
      * Update the specified resource in storage.
      *
