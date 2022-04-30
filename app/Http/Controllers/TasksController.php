@@ -71,6 +71,7 @@ class TasksController extends Controller
             'content' => $request->content,
             ]);
             
+        
         return redirect('/');
         
         // $task = new Task;
@@ -156,10 +157,10 @@ class TasksController extends Controller
         $task->status = $request->status;
         $task->content = $request->content;
         
-        
         $task->save();
 
         return redirect('/');
+        
         
     }
 
