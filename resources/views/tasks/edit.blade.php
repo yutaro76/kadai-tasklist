@@ -21,7 +21,14 @@
                 {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}
 
             {!! Form::close() !!}
+            
+            {!! Form::open(['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
+            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+            {!! Form::close() !!}
         </div>
+            
+        
+            
     </div>
 
 @endsection

@@ -15,9 +15,20 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('id', 'desc')->paginate(10);
+        $data = [];
+        if (\Auth::check()) {
+            
+            $user = \Auth::user();
+            
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(5);
+            
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+                ];
+        }
         
-        return view('tasks.index', ['tasks' => $tasks,]);
+        return view('tasks.index', $data);
     }
 
     /**
@@ -45,10 +56,15 @@ class TasksController extends Controller
             'content' => 'required',
             ]);
         
-        $task = new Task;
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
+        $request->user()->tasks()->create([
+            'status' => $request->status,
+            'content' => $request->content,
+            ]);
+        
+        // $task = new Task;
+        // // $task->status = $request->status;
+        // // $task->content = $request->content;
+        // $task->save();
         
         return redirect('/');
     }
@@ -63,7 +79,16 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        return view('tasks.show', ['task' => $task,]);
+        // $user->loadRelationshipCounts();
+        
+        $user = $task->user_id;
+        
+        // $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(5);
+        
+        return view('tasks.show', [
+            'user' => $user,
+            'task' => $task,
+            ]);
     }
 
     /**
@@ -111,7 +136,9 @@ class TasksController extends Controller
     {
         $task = Task::FindOrFail($id);
         
+        if (\Auth::id() === $task->user_id) {
         $task->delete();
+        }
         
         return redirect('/');
     }
