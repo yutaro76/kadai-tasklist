@@ -74,15 +74,16 @@ class TasksController extends Controller
         // $task = new Task;
         // // $task->status = $request->status;
         // // $task->content = $request->content;
-        // $task->save();
         
-        if (\Auth::check()) {
+    //     $task->save();
         
-        return redirect('/');
+    //     if (\Auth::check()) {
         
-        }else {
-        return view('tasks.index');
-    }
+    //     return redirect('/');
+        
+    //     }else {
+    //     return view('tasks.index');
+    // }
     }
 
     /**
@@ -153,16 +154,11 @@ class TasksController extends Controller
         $task->status = $request->status;
         $task->content = $request->content;
         
-        if (\Auth::id() === $task->user_id) {{
+        
         $task->save();
-        }
+
         return redirect('/');
         
-    } else {
-        
-        return view('tasks.index');
-    }
-    
     }
 
     /**
@@ -175,15 +171,12 @@ class TasksController extends Controller
     {
         $task = Task::FindOrFail($id);
         
-        if (\Auth::id() === $task->user_id) {{
+        if (\Auth::id() === $task->user_id) {
         
         $task->delete();
         }
         return redirect('/');
         
-        } else {
-            return view('tasks.index');
-        }
         
     }
 }
